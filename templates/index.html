@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motivational Quotes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: background 1s ease;
+        }
+
+        .bg-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .bg-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .bg-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .bg-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .bg-5 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .bg-6 { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .bg-7 { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .bg-8 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            max-width: 900px;
+            width: 90%;
+        }
+
+        .quote-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.6s ease;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .quote-icon {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .quote-text {
+            font-size: 28px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .quote-author {
+            font-size: 20px;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .quote-category {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .controls {
+            margin-top: 40px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .category-filter {
+            margin-top: 20px;
+        }
+
+        select {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            color: #333;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        select:hover {
+            border-color: #764ba2;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(-100px) translateX(50px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .quote-text {
+                font-size: 22px;
+            }
+            
+            .quote-card {
+                padding: 40px 25px;
+            }
+
+            button {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-1">
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="quote-card" id="quote-card">
+            <div class="quote-icon">💡</div>
+            <div class="quote-text" id="quote-text">Loading inspiration...</div>
+            <div class="quote-author" id="quote-author"></div>
+            <div class="quote-category" id="quote-category"></div>
+        </div>
+
+        <div class="controls">
+            <button onclick="getNewQuote()">✨ New Quote</button>
+            <button onclick="changeBackground()">🎨 Change Theme</button>
+        </div>
+
+        <div class="category-filter">
+            <select id="category-select" onchange="filterByCategory()">
+                <option value="all">All Categories</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+        let currentBg = 1;
+        const totalBgs = 8;
+        let categories = [];
+
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 20 + 10 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = Math.random() * 10 + 10 + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        async function loadCategories() {
+            try {
+                const response = await fetch('/api/categories');
+                const data = await response.json();
+                categories = data.categories;
+                
+                const select = document.getElementById('category-select');
+                categories.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat;
+                    option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        async function getNewQuote() {
+            const card = document.getElementById('quote-card');
+            card.classList.add('loading');
+
+            try {
+                const response = await fetch('/api/quote');
+                const data = await response.json();
+                
+                setTimeout(() => {
+                    displayQuote(data);
+                    card.classList.remove('loading');
+                }, 300);
+            } catch (error) {
+                console.error('Error fetching quote:', error);
+                card.classList.remove('loading');
+            }
+        }
+
+        async function filterByCategory() {
+            const category = document.getElementById('category-select').value;
+            const card = document.getElementById('quote-card');
+            card.classList.add('loading');
+
+            try {
+                const url = category === 'all' ? '/api/quote' : `/api/quote/category/${category}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                setTimeout(() => {
+                    displayQuote(data);
+                    card.classList.remove('loading');
+                }, 300);
+            } catch (error) {
+                console.error('Error fetching quote:', error);
+                card.classList.remove('loading');
+            }
+        }
+
+        function displayQuote(data) {
+            document.getElementById('quote-text').textContent = `"${data.text}"`;
+            document.getElementById('quote-author').textContent = `— ${data.author}`;
+            document.getElementById('quote-category').textContent = data.category;
+
+            const card = document.getElementById('quote-card');
+            card.style.animation = 'none';
+            setTimeout(() => {
+                card.style.animation = 'fadeIn 0.6s ease';
+            }, 10);
+        }
+
+        function changeBackground() {
+            currentBg = (currentBg % totalBgs) + 1;
+            document.body.className = `bg-${currentBg}`;
+        }
+
+        setInterval(changeBackground, 30000);
+
+        createParticles();
+        loadCategories();
+        getNewQuote();
+    </script>
+</body>
+</html>
